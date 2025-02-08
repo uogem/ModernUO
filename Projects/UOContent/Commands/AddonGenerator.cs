@@ -27,15 +27,14 @@ public class AddonGenerator
         // AddonGenerator script for ModernUO
         //
         /////////////////////////////////////////////////
-        using System;
-        using Server;{serverItemsNamespace}
+        using ModernUO.Serialization;
 
         namespace {namespace};
 
         [SerializationGenerator(0)]
-        public class {name}Addon : BaseAddon
+        public partial class {name}Addon : BaseAddon
         {
-            public override BaseAddonDeed Deed => {name}AddonDeed();
+            public override BaseAddonDeed Deed => new {name}AddonDeed();
 
             [Constructible]
             public {name}Addon()
@@ -45,7 +44,7 @@ public class AddonGenerator
         }
 
         [SerializationGenerator(0)]
-        public class {name}AddonDeed : BaseAddonDeed
+        public partial class {name}AddonDeed : BaseAddonDeed
         {
             public override BaseAddon Addon => new {name}Addon();
             public override string DefaultName => "{name}";
@@ -271,8 +270,8 @@ public class AddonGenerator
             }
             sb.Append($"                {xOffset},\n");
             sb.Append($"                {yOffset},\n");
-            sb.Append($"                {zOffset},\n");
-            sb.Append("            )\n");
+            sb.Append($"                {zOffset}\n");
+            sb.Append("            );\n");
         }
 
         string output = _template.Replace("{name}", name);
