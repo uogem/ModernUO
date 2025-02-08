@@ -57,7 +57,7 @@ public class AddonGenerator
         """;
 
     // TODO: .NET 9 - Use search values
-    // private static SearchValues<string> _templatePlaceholders = SearchValues.Create("{serverItemsNamespace}", "{namespace}", "{name}", "{components}");
+    private static SearchValues<string> _templatePlaceholders = SearchValues.Create("{serverItemsNamespace}", "{namespace}", "{name}", "{components}");
 
     public static void Configure()
     {
@@ -82,7 +82,7 @@ public class AddonGenerator
         if (e.Arguments.Length <= 0)
         {
             // Send gump
-            e.Mobile.SendGump(new InternalGump(e.Mobile, pickerState));
+            e.Mobile.SendGump(new DynamicGump(e.Mobile, pickerState));
             return;
         }
 
@@ -300,7 +300,7 @@ public class AddonGenerator
         public sbyte Max { get; set; }
     }
 
-    private class InternalGump : Gump
+    private class DynamicGump : Gump
     {
         private const int LabelHue = 0x480;
         private const int GreenHue = 0x40;
@@ -308,7 +308,7 @@ public class AddonGenerator
 
         public override bool Singleton => true;
 
-        public InternalGump(Mobile m, PickerState state) : base(100, 50)
+        public DynamicGump(Mobile m, PickerState state) : base(100, 50)
         {
             _state = state;
             MakeGump();
@@ -396,7 +396,7 @@ public class AddonGenerator
             if (fail)
             {
                 sender.Mobile.SendMessage(0x40, "Please review the generation parameters, some are invalid.");
-                sender.Mobile.SendGump(new InternalGump(sender.Mobile, _state));
+                sender.Mobile.SendGump(new DynamicGump(sender.Mobile, _state));
                 return;
             }
 
